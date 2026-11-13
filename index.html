@@ -157,6 +157,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       <div><h2 data-i18n="design"></h2><p class="note" id="help" style="margin-top:4px"></p></div>
       <div class="field" role="group" data-i18n-aria="product"><div class="label" data-i18n="product"></div><div class="chips" id="tabs"></div></div>
       <div class="field" id="fLetter" role="group" data-i18n-aria="lettering"><div class="label" data-i18n="lettering"></div><div class="chips" id="letters"></div></div>
+      <p class="note" id="ownHint" style="color:var(--ink)" data-i18n="ownHint" hidden></p>
       <div class="rowf" id="fJersey">
         <div class="field" style="flex:2 1 180px"><label class="label" for="nombre" data-i18n="nameLabel"></label><input id="nombre" type="text" maxlength="12" autocomplete="off" style="text-transform:uppercase"></div>
         <div class="field" style="flex:1 1 110px"><label class="label" for="numero" data-i18n="numberLabel"></label><input id="numero" type="text" inputmode="numeric" maxlength="2" autocomplete="off"></div>
@@ -164,11 +165,12 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       <div class="field" id="fTexto"><label class="label" for="texto" data-i18n="engraveLabel"></label><input id="texto" type="text" maxlength="16" autocomplete="off"></div>
       <div class="field" style="gap:8px">
         <label class="label" for="logo" data-i18n="logoLabel"></label>
-        <input id="logo" type="file" accept="image/png">
+        <input id="logo" type="file" accept="image/png" multiple>
         <p class="note" data-i18n="logoNote"></p>
         <div class="msg" id="logoMsg" aria-live="polite"></div>
         <div id="logoTools" hidden style="display:flex;flex-direction:column;gap:12px">
           <p class="note" style="color:var(--ink)" data-i18n="dragHint"></p>
+          <div class="chips" id="pieces" role="group" data-i18n-aria="pieces"></div>
           <div class="chips" id="sides" role="group" data-i18n-aria="logoSide"></div>
           <label class="label" for="logoW" data-i18n="logoSize"></label>
           <input id="logoW" type="range" min="8" max="60" step="1" value="28">
@@ -271,8 +273,8 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       videoPh: '[Video: kids playing in the gear · goes here, muted]', eyebrow: 'Baseball for kids', headline: 'A jersey, a cap and a ball. You design them.', startDesign: 'Start designing',
       threePieces: 'Three pieces', designLink: 'Design it', design: 'Design', product: 'Product',
       nameLabel: 'Name · back, up to 12 letters', numberLabel: 'Number · front and back', engraveLabel: 'Engraved text · up to 16 letters',
-      logoLabel: 'Your logo or artwork · PNG', logoNote: 'PNG with a transparent background, at least 1000 px on the long side, up to 10 MB.', dragHint: 'Drag it on the piece to place it anywhere.',
-      logoSide: 'Logo side', logoSize: 'Logo size', logoRemove: 'Remove logo', size: 'Size', addTo: 'Add to bag', added: 'Added: ',
+      logoLabel: 'Your logo or artwork · PNG files', pieces: 'Uploaded files', fileWord: 'File ', maxFiles: 'You can add up to 6 files per piece.', ownHint: 'Upload your name and number as PNG files below, then drag each one into place.', logoNote: 'PNG with a transparent background, at least 1000 px on the long side, up to 10 MB.', dragHint: 'Drag each file on the piece to place it anywhere. Pick a file to resize or remove it.',
+      logoSide: 'Side', logoSize: 'Size of this file', logoRemove: 'Remove this file', size: 'Size', addTo: 'Add to bag', added: 'Added: ',
       front: 'Front', back: 'Back', rotate: 'Rotate', previewNote: 'On-screen preview; final artwork is reviewed before production.',
       frontView: ', front view', backView: 'Back of the jersey', yourLogo: 'Your logo',
       notPng: 'That file is not a PNG. Upload your logo as a PNG with a transparent background.', tooBig: 'That file is over 10 MB. Upload a lighter version.', unreadable: 'We could not read that file. Try another PNG.',
@@ -286,7 +288,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       newsLabel: 'Be the first to know', subscribe: 'Subscribe', subscribed: 'Done. We will let you know about new drops.',
       shop: 'Shop', helpNav: 'Help', more: 'More', sizeGuide: 'Size guide', shipping: 'Shipping', returns: 'Returns', terms: 'Terms', privacy: 'Privacy',
       legal: '© 2026 Little Dugout · Baseball for kids, made to order.', langBtn: 'Español', langAria: 'Cambiar a español',
-      lettering: 'Lettering style', fonts: { varsity: 'Varsity', slab: 'Slab', block: 'Block', speed: 'Speed' }, noName: 'No name', engraved: 'Engraved: ', withLogo: 'with your logo', sizeWord: 'Size ',
+      lettering: 'Lettering style', fonts: { varsity: 'Varsity', slab: 'Slab', block: 'Block', speed: 'Speed', own: 'My own artwork' }, noName: 'No name', engraved: 'Engraved: ', withFiles: function (n) { return n === 1 ? 'with 1 uploaded file' : 'with ' + n + ' uploaded files'; }, sizeWord: 'Size ',
       sizes: { toddler: 'Toddler', youth: 'Youth', one: 'One size', official: 'Official' }, sides: { front: 'front', back: 'back' },
       p: {
         jersey: { name: 'Baseball jersey', short: 'Jersey', desc: 'Two-button, navy with white panels. Name, number and your logo.', help: 'Type the name for the back, change the front and back number, and add your logo.' },
@@ -300,8 +302,8 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       videoPh: '[Video: niños jugando con las piezas · va aquí, sin sonido]', eyebrow: 'Béisbol para niños', headline: 'Un jersey, una gorra y una pelota. Tú los diseñas.', startDesign: 'Empezar a diseñar',
       threePieces: 'Tres piezas', designLink: 'Diseñar', design: 'Diseñar', product: 'Producto',
       nameLabel: 'Nombre · espalda, hasta 12 letras', numberLabel: 'Número · frente y espalda', engraveLabel: 'Texto grabado · hasta 16 letras',
-      logoLabel: 'Tu logo o diseño · PNG', logoNote: 'PNG con fondo transparente, mínimo 1000 px por lado, hasta 10 MB.', dragHint: 'Arrástralo sobre la pieza para ponerlo donde quieras.',
-      logoSide: 'Lado del logo', logoSize: 'Tamaño del logo', logoRemove: 'Quitar logo', size: 'Talla', addTo: 'Agregar a la bolsa', added: 'Agregado: ',
+      logoLabel: 'Tu logo o diseño · archivos PNG', pieces: 'Archivos subidos', fileWord: 'Archivo ', maxFiles: 'Puedes agregar hasta 6 archivos por pieza.', ownHint: 'Sube tu nombre y tu número como archivos PNG aquí abajo y arrastra cada uno a su lugar.', logoNote: 'PNG con fondo transparente, mínimo 1000 px por lado, hasta 10 MB.', dragHint: 'Arrastra cada archivo sobre la pieza para ponerlo donde quieras. Elige un archivo para cambiar su tamaño o quitarlo.',
+      logoSide: 'Lado', logoSize: 'Tamaño de este archivo', logoRemove: 'Quitar este archivo', size: 'Talla', addTo: 'Agregar a la bolsa', added: 'Agregado: ',
       front: 'Frente', back: 'Espalda', rotate: 'Girar', previewNote: 'Vista previa de pantalla; el arte final se revisa antes de producir.',
       frontView: ', vista de frente', backView: 'Espalda del jersey', yourLogo: 'Tu logo',
       notPng: 'Ese archivo no es PNG. Sube tu logo en PNG con fondo transparente.', tooBig: 'El archivo pesa más de 10 MB. Sube una versión más liviana.', unreadable: 'No pudimos leer ese archivo. Prueba con otro PNG.',
@@ -315,7 +317,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       newsLabel: 'Entérate primero', subscribe: 'Suscribirme', subscribed: 'Listo. Te avisaremos de los lanzamientos.',
       shop: 'Tienda', helpNav: 'Ayuda', more: 'Más', sizeGuide: 'Guía de tallas', shipping: 'Envíos', returns: 'Devoluciones', terms: 'Términos', privacy: 'Privacidad',
       legal: '© 2026 Little Dugout · Béisbol para niños, hecho a pedido.', langBtn: 'English', langAria: 'Switch to English',
-      lettering: 'Estilo de letra', fonts: { varsity: 'Varsity', slab: 'Slab', block: 'Bloque', speed: 'Veloz' }, noName: 'Sin nombre', engraved: 'Grabado: ', withLogo: 'con tu logo', sizeWord: 'Talla ',
+      lettering: 'Estilo de letra', fonts: { varsity: 'Varsity', slab: 'Slab', block: 'Bloque', speed: 'Veloz', own: 'Mi propio arte' }, noName: 'Sin nombre', engraved: 'Grabado: ', withFiles: function (n) { return n === 1 ? 'con 1 archivo subido' : 'con ' + n + ' archivos subidos'; }, sizeWord: 'Talla ',
       sizes: { toddler: 'Toddler', youth: 'Youth', one: 'Única', official: 'Oficial' }, sides: { front: 'frente', back: 'espalda' },
       p: {
         jersey: { name: 'Jersey de béisbol', short: 'Jersey', desc: 'Dos botones, marino con paneles blancos. Nombre, número y tu logo.', help: 'Escribe el nombre de la espalda, cambia el número del frente y la espalda, y súmale tu logo.' },
@@ -328,11 +330,13 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   function save(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) {} }
   var lang = load('ld-lang', 'en') === 'es' ? 'es' : 'en';
   var L = function () { return T[lang]; };
-  var st = { prod: 'jersey', font: 'varsity', nombre: 'LUCA', numero: '15', texto: 'Luca', size: {}, angle: 0, logos: {}, cart: load('ld-cart', []) };
+  var st = { prod: 'jersey', font: 'varsity', nombre: 'LUCA', numero: '15', texto: 'Luca', size: {}, angle: 0, logos: {}, sel: {}, cart: load('ld-cart', []) };
   if (!Array.isArray(st.cart)) st.cart = [];
   var $ = function (id) { return document.getElementById(id); };
   var cur = function () { return CAT.filter(function (p) { return p.id === st.prod; })[0]; };
-  var logo = function () { return st.logos[st.prod]; };
+  var MAX_FILES = 6;
+  var arts = function () { return st.logos[st.prod] || (st.logos[st.prod] = []); };
+  var sel = function () { var a = arts(); return a[Math.min(st.sel[st.prod] || 0, a.length - 1)]; };
   var money = function (n) { return '$' + n.toFixed(2); };
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function chip(label, pressed, fn) {
@@ -368,33 +372,48 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   }
   function pick(id) { st.prod = id; st.angle = 0; $('logoMsg').textContent = ''; $('addMsg').textContent = ''; $('logo').value = ''; render(); }
 
+  var artEls = []; // uploaded-file elements, in the same order as arts()
   function placeLogo() {
+    artEls = [];
     var old = document.querySelectorAll('.userlogo');
     for (var i = 0; i < old.length; i++) old[i].remove();
-    var lg = logo(), p = cur();
-    $('logoTools').hidden = !(lg && lg.src);
+    var list = arts(), p = cur(), cur1 = sel();
+    $('logoTools').hidden = list.length === 0;
     $('sides').hidden = !p.back;
-    if (!lg || !lg.src) return;
-    var face = (p.back && lg.side === 'back') ? $('back') : $('front');
-    var im = el('img', 'userlogo'); im.src = lg.src; im.alt = L().yourLogo; im.draggable = false;
-    im.style.left = lg.x + '%'; im.style.top = lg.y + '%'; im.style.width = lg.w + '%';
-    var drag = null;
-    im.addEventListener('pointerdown', function (e) {
-      e.stopPropagation(); e.preventDefault();
-      if (p.back) { st.angle = lg.side === 'back' ? 180 : 0; applyAngle(); }
-      drag = face.getBoundingClientRect();
-      try { im.setPointerCapture(e.pointerId); } catch (err) {}
+    list.forEach(function (lg, idx) {
+      var face = (p.back && lg.side === 'back') ? $('back') : $('front');
+      var im = el('img', 'userlogo'); im.src = lg.src; im.alt = L().fileWord + (idx + 1); im.draggable = false;
+      im.style.left = lg.x + '%'; im.style.top = lg.y + '%'; im.style.width = lg.w + '%';
+      im.style.outlineStyle = lg === cur1 ? 'solid' : 'dashed';
+      var drag = null;
+      im.addEventListener('pointerdown', function (e) {
+        e.stopPropagation(); e.preventDefault();
+        if (st.sel[p.id] !== idx) { st.sel[p.id] = idx; syncTools(); }
+        if (p.back) { st.angle = lg.side === 'back' ? 180 : 0; applyAngle(); }
+        drag = face.getBoundingClientRect();
+        try { im.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      im.addEventListener('pointermove', function (e) {
+        if (!drag) return;
+        e.stopPropagation();
+        lg.x = Math.round(Math.max(5, Math.min(95, (e.clientX - drag.left) / drag.width * 100)));
+        lg.y = Math.round(Math.max(5, Math.min(95, (e.clientY - drag.top) / drag.height * 100)));
+        im.style.left = lg.x + '%'; im.style.top = lg.y + '%';
+      });
+      var end = function (e) { e.stopPropagation(); drag = null; };
+      im.addEventListener('pointerup', end); im.addEventListener('pointercancel', end);
+      face.appendChild(im); artEls.push(im);
     });
-    im.addEventListener('pointermove', function (e) {
-      if (!drag) return;
-      e.stopPropagation();
-      lg.x = Math.round(Math.max(5, Math.min(95, (e.clientX - drag.left) / drag.width * 100)));
-      lg.y = Math.round(Math.max(5, Math.min(95, (e.clientY - drag.top) / drag.height * 100)));
-      im.style.left = lg.x + '%'; im.style.top = lg.y + '%';
-    });
-    var end = function (e) { e.stopPropagation(); drag = null; };
-    im.addEventListener('pointerup', end); im.addEventListener('pointercancel', end);
-    face.appendChild(im);
+    syncTools();
+  }
+  // Controls for the selected file: which one, which side, how big.
+  function syncTools() {
+    var list = arts(), lg = sel(), p = cur();
+    for (var i = 0; i < artEls.length; i++) artEls[i].style.outlineStyle = list[i] === lg ? 'solid' : 'dashed';
+    if (!lg) return;
+    fill($('pieces'), list.map(function (x, idx) {
+      return chip(L().fileWord + (idx + 1), x === lg, function () { st.sel[p.id] = idx; if (p.back) st.angle = x.side === 'back' ? 180 : 0; applyAngle(); syncTools(); });
+    }));
     $('logoW').value = lg.w;
     fill($('sides'), [['front', L().front, 0], ['back', L().back, 180]].map(function (s) {
       return chip(s[1], lg.side === s[0], function () { lg.side = s[0]; st.angle = s[2]; render(); });
@@ -408,14 +427,15 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     var p = cur(), tx = L().p[p.id], isJ = p.id === 'jersey', isB = p.id === 'ball';
     $('help').textContent = tx.help;
     fill($('tabs'), CAT.map(function (c) { return chip(L().p[c.id].short, c.id === st.prod, function () { pick(c.id); }); }));
-    $('fJersey').hidden = !isJ; $('fTexto').hidden = !isB; $('fLetter').hidden = !isJ;
+    var own = isJ && st.font === 'own';
+    $('fJersey').hidden = !isJ || own; $('ownHint').hidden = !own; $('fTexto').hidden = !isB; $('fLetter').hidden = !isJ;
     var fo = FONTS.filter(function (f) { return f[0] === st.font; })[0] || FONTS[0];
     $('spin').style.setProperty('--letter', fo[1]); $('spin').style.setProperty('--k', fo[2]);
     fill($('letters'), FONTS.map(function (f) {
-      var c = chip(L().fonts[f[0]], f[0] === fo[0], function () { st.font = f[0]; render(); });
+      var c = chip(L().fonts[f[0]], !own && f[0] === fo[0], function () { st.font = f[0]; render(); });
       c.style.fontFamily = f[1] + ', Barlow, sans-serif'; c.style.fontSize = '15px'; c.style.letterSpacing = '.04em';
       return c;
-    }));
+    }).concat([chip(L().fonts.own, own, function () { st.font = 'own'; render(); })]));
     $('nombre').value = st.nombre; $('numero').value = st.numero; $('texto').value = st.texto;
     var size = st.size[p.id] || p.sizes[0];
     fill($('sizes'), p.sizes.map(function (s) { return chip(L().sizes[s], s === size, function () { st.size[p.id] = s; render(); }); }));
@@ -423,8 +443,8 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     $('frontImg').src = p.img; $('frontImg').alt = tx.name + L().frontView;
     $('back').hidden = !p.back; if (p.back) { $('backImg').src = p.back; $('backImg').alt = L().backView; }
     $('turn').hidden = !p.back; $('stage').style.cursor = p.back ? 'grab' : 'default';
-    $('numFront').hidden = !isJ; $('numFront').textContent = st.numero; $('numBack').textContent = st.numero;
-    var nb = $('nameBack'); nb.textContent = st.nombre;
+    $('numFront').hidden = !isJ || own; $('numFront').textContent = st.numero; $('numBack').textContent = st.numero; $('numBack').hidden = own;
+    var nb = $('nameBack'); nb.textContent = st.nombre; nb.hidden = own;
     var n = Math.max(st.nombre.length, 1); nb.style.fontSize = ((n <= 6 ? 8 : Math.max(3.8, 8 * 6 / n)) * fo[2]).toFixed(2) + 'cqw';
     var en = $('engrave'); en.hidden = !isB; en.textContent = st.texto;
     var t = Math.max(st.texto.length, 1); en.style.fontSize = (t <= 6 ? 8 : Math.max(3, 8 * 6 / t)).toFixed(2) + 'cqw';
@@ -446,35 +466,52 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { stage.addEventListener(ev, function () { spinDrag = null; }); });
 
   $('logo').addEventListener('change', function (e) {
-    var f = e.target.files && e.target.files[0], msg = $('logoMsg');
-    if (!f) return;
-    if (f.type !== 'image/png') { msg.textContent = L().notPng; e.target.value = ''; return; }
-    if (f.size > 10 * 1024 * 1024) { msg.textContent = L().tooBig; e.target.value = ''; return; }
-    var r = new FileReader();
-    r.onload = function () {
-      var im = new Image();
-      im.onload = function () {
-        var p = cur(), prev = logo();
-        st.logos[p.id] = { src: r.result, x: p.logo[0], y: p.logo[1], w: p.logo[2], side: (prev && prev.side) || 'front' };
-        st.angle = st.logos[p.id].side === 'back' ? 180 : 0;
-        var small = Math.max(im.naturalWidth, im.naturalHeight) < 1000;
-        msg.textContent = (small ? L().logoSmall : L().logoOk)(im.naturalWidth, im.naturalHeight);
-        render();
+    var files = Array.prototype.slice.call(e.target.files || []), msg = $('logoMsg'), p = cur();
+    e.target.value = '';
+    if (!files.length) return;
+    files.forEach(function (f) {
+      if (f.type !== 'image/png') { msg.textContent = L().notPng; return; }
+      if (f.size > 10 * 1024 * 1024) { msg.textContent = L().tooBig; return; }
+      var r = new FileReader();
+      r.onload = function () {
+        var im = new Image();
+        im.onload = function () {
+          if (st.prod !== p.id) return;
+          var list = arts();
+          if (list.length >= MAX_FILES) { msg.textContent = L().maxFiles; return; }
+          var side = (p.back && st.angle > 90 && st.angle < 270) ? 'back' : 'front';
+          // offset each new file a little so they do not land exactly on top of each other
+          list.push({ src: r.result, x: p.logo[0], y: Math.min(90, p.logo[1] + list.length * 6), w: p.logo[2], side: side });
+          st.sel[p.id] = list.length - 1;
+          var small = Math.max(im.naturalWidth, im.naturalHeight) < 1000;
+          msg.textContent = (small ? L().logoSmall : L().logoOk)(im.naturalWidth, im.naturalHeight);
+          render();
+        };
+        im.onerror = function () { msg.textContent = L().unreadable; };
+        im.src = r.result;
       };
-      im.onerror = function () { msg.textContent = L().unreadable; };
-      im.src = r.result;
-    };
-    r.readAsDataURL(f);
+      r.readAsDataURL(f);
+    });
   });
-  $('logoW').addEventListener('input', function (e) { var lg = logo(); if (lg) { lg.w = Number(e.target.value) || 28; placeLogo(); } });
-  $('logoRemove').addEventListener('click', function () { delete st.logos[st.prod]; $('logo').value = ''; $('logoMsg').textContent = ''; render(); });
+  $('logoW').addEventListener('input', function (e) {
+    var lg = sel(); if (!lg) return;
+    lg.w = Number(e.target.value) || 28;
+    var i = arts().indexOf(lg);
+    if (artEls[i]) artEls[i].style.width = lg.w + '%';
+  });
+  $('logoRemove').addEventListener('click', function () {
+    var list = arts(), i = list.indexOf(sel());
+    if (i >= 0) list.splice(i, 1);
+    st.sel[st.prod] = Math.max(0, i - 1); $('logoMsg').textContent = ''; render();
+  });
 
   // ---- Bag (kept in the browser so it survives a reload) ----
   function detail(it) {
     var d = [];
-    if (it.id === 'jersey') d.push((it.nombre || L().noName) + ' #' + (it.numero || '0') + (it.font && L().fonts[it.font] ? ' · ' + L().fonts[it.font] : ''));
+    if (it.id === 'jersey') d.push(it.font === 'own' ? L().fonts.own : (it.nombre || L().noName) + ' #' + (it.numero || '0') + (it.font && L().fonts[it.font] ? ' · ' + L().fonts[it.font] : ''));
     if (it.id === 'ball' && it.texto) d.push(L().engraved + it.texto);
-    if (it.logo) d.push(L().withLogo + (it.side ? ' (' + L().sides[it.side] + ')' : ''));
+    var nf = it.files || (it.logo ? 1 : 0);
+    if (nf) d.push(L().withFiles(nf));
     d.push(L().sizeWord + L().sizes[it.size]);
     return d.join(' · ');
   }
@@ -504,11 +541,11 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   $('bagBtn').addEventListener('click', function () { openBag($('bag').hidden); });
   $('bagClear').addEventListener('click', function () { st.cart = []; commit(); });
   $('add').addEventListener('click', function () {
-    var p = cur(), lg = logo(), has = !!(lg && lg.src);
-    var it = { id: p.id, size: st.size[p.id] || p.sizes[0], logo: has, side: has && p.back ? lg.side : '', qty: 1 };
-    if (p.id === 'jersey') { it.nombre = st.nombre; it.numero = st.numero; it.font = st.font; }
+    var p = cur();
+    var it = { id: p.id, size: st.size[p.id] || p.sizes[0], files: arts().length, qty: 1 };
+    if (p.id === 'jersey') { it.font = st.font; if (st.font !== 'own') { it.nombre = st.nombre; it.numero = st.numero; } }
     if (p.id === 'ball') it.texto = st.texto;
-    var key = function (x) { return [x.id, x.size, x.logo, x.side, x.nombre, x.numero, x.texto, x.font].join('|'); };
+    var key = function (x) { return [x.id, x.size, x.files, x.nombre, x.numero, x.texto, x.font].join('|'); };
     var same = st.cart.filter(function (x) { return key(x) === key(it); })[0];
     if (same) same.qty += 1; else st.cart.push(it);
     $('addMsg').textContent = L().added + L().p[p.id].name + '.';
