@@ -7,7 +7,7 @@
 <meta name="description" content="A baseball jersey, cap and ball for kids. Design your own: name, number and your logo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Big+Shoulders+Display:wght@700;800;900&family=Yellowtail&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barlow:wght@400;500;600&family=Bebas+Neue&family=Big+Shoulders+Display:wght@700;800;900&family=Graduate&family=Racing+Sans+One&family=Yellowtail&display=swap">
 <style>
 :root{--navy:#1b2a4a;--deep:#111c33;--gold:#d9a441;--gold-text:#7a560f;--white:#fff;--ink:#1b2233;--muted:#4b5163;--tile:#e7e8ed;--line:#e2e5ea;--ctl:#7b8794;--night-muted:#b3bccf;--display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif}
 *{box-sizing:border-box}
@@ -72,10 +72,10 @@ input[type=file]{min-height:44px;font-size:14px}
 .face.back{position:absolute;inset:0;transform:rotateY(180deg)}
 .face>img.base{display:block;width:100%;height:auto;pointer-events:none}
 .ov{position:absolute;text-align:center;pointer-events:none;line-height:1}
-.num{font-family:var(--display);font-weight:900;color:var(--gold);paint-order:stroke fill}
-.num.front{left:53%;top:30%;width:22%;font-size:10cqw;-webkit-text-stroke:.4cqw #fff}
-.name.backn{left:0;right:0;top:23%;font:800 9cqw/1 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--gold);-webkit-text-stroke:.4cqw #fff;paint-order:stroke fill;white-space:nowrap}
-.num.backn{left:0;right:0;top:33%;font-size:32cqw;letter-spacing:.02em;-webkit-text-stroke:1cqw #fff}
+.num{font-family:var(--letter,Graduate),Georgia,serif;font-weight:400;color:var(--gold);paint-order:stroke fill}
+.num.front{left:48%;top:30%;width:26%;font-size:calc(9cqw * var(--k,1));-webkit-text-stroke:.4cqw #fff}
+.name.backn{left:0;right:0;top:23%;font:400 9cqw/1 var(--letter,Graduate),Georgia,serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);-webkit-text-stroke:.4cqw #fff;paint-order:stroke fill;white-space:nowrap}
+.num.backn{left:0;right:0;top:33%;font-size:calc(28cqw * var(--k,1));letter-spacing:.02em;-webkit-text-stroke:1cqw #fff}
 .engrave{left:32%;right:32%;top:45%;font-family:Yellowtail,'Brush Script MT',cursive;font-size:11cqw;line-height:1.1;color:var(--navy);white-space:nowrap}
 .userlogo{position:absolute;height:auto;transform:translate(-50%,-50%);cursor:move;touch-action:none;outline:1px dashed var(--ctl);outline-offset:4px}
 .turn{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
@@ -156,6 +156,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     <div class="panel">
       <div><h2 data-i18n="design"></h2><p class="note" id="help" style="margin-top:4px"></p></div>
       <div class="field" role="group" data-i18n-aria="product"><div class="label" data-i18n="product"></div><div class="chips" id="tabs"></div></div>
+      <div class="field" id="fLetter" role="group" data-i18n-aria="lettering"><div class="label" data-i18n="lettering"></div><div class="chips" id="letters"></div></div>
       <div class="rowf" id="fJersey">
         <div class="field" style="flex:2 1 180px"><label class="label" for="nombre" data-i18n="nameLabel"></label><input id="nombre" type="text" maxlength="12" autocomplete="off" style="text-transform:uppercase"></div>
         <div class="field" style="flex:1 1 110px"><label class="label" for="numero" data-i18n="numberLabel"></label><input id="numero" type="text" inputmode="numeric" maxlength="2" autocomplete="off"></div>
@@ -248,7 +249,9 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
 <script>
 (function () {
   // ---- Settings you can edit ----
-  var CONTACT_EMAIL = ''; // business inbox for the contact form, e.g. 'hello@yourdomain.com'
+  var CONTACT_EMAIL = 'lucabaseball15@gmail.com'; // inbox that receives the contact form
+  // Lettering styles for the jersey: id, font family, size factor (wider fonts get a smaller factor).
+  var FONTS = [['varsity', 'Graduate', 1], ['slab', "'Alfa Slab One'", 0.92], ['block', "'Bebas Neue'", 1.3], ['speed', "'Racing Sans One'", 1.08]];
   var REELS = [
     'https://www.instagram.com/p/DexU8K7TvC4/',
     'https://www.instagram.com/p/DfDXkkyzGbm/',
@@ -283,7 +286,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       newsLabel: 'Be the first to know', subscribe: 'Subscribe', subscribed: 'Done. We will let you know about new drops.',
       shop: 'Shop', helpNav: 'Help', more: 'More', sizeGuide: 'Size guide', shipping: 'Shipping', returns: 'Returns', terms: 'Terms', privacy: 'Privacy',
       legal: '© 2026 Little Dugout · Baseball for kids, made to order.', langBtn: 'Español', langAria: 'Cambiar a español',
-      noName: 'No name', engraved: 'Engraved: ', withLogo: 'with your logo', sizeWord: 'Size ',
+      lettering: 'Lettering style', fonts: { varsity: 'Varsity', slab: 'Slab', block: 'Block', speed: 'Speed' }, noName: 'No name', engraved: 'Engraved: ', withLogo: 'with your logo', sizeWord: 'Size ',
       sizes: { toddler: 'Toddler', youth: 'Youth', one: 'One size', official: 'Official' }, sides: { front: 'front', back: 'back' },
       p: {
         jersey: { name: 'Baseball jersey', short: 'Jersey', desc: 'Two-button, navy with white panels. Name, number and your logo.', help: 'Type the name for the back, change the front and back number, and add your logo.' },
@@ -312,7 +315,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       newsLabel: 'Entérate primero', subscribe: 'Suscribirme', subscribed: 'Listo. Te avisaremos de los lanzamientos.',
       shop: 'Tienda', helpNav: 'Ayuda', more: 'Más', sizeGuide: 'Guía de tallas', shipping: 'Envíos', returns: 'Devoluciones', terms: 'Términos', privacy: 'Privacidad',
       legal: '© 2026 Little Dugout · Béisbol para niños, hecho a pedido.', langBtn: 'English', langAria: 'Switch to English',
-      noName: 'Sin nombre', engraved: 'Grabado: ', withLogo: 'con tu logo', sizeWord: 'Talla ',
+      lettering: 'Estilo de letra', fonts: { varsity: 'Varsity', slab: 'Slab', block: 'Bloque', speed: 'Veloz' }, noName: 'Sin nombre', engraved: 'Grabado: ', withLogo: 'con tu logo', sizeWord: 'Talla ',
       sizes: { toddler: 'Toddler', youth: 'Youth', one: 'Única', official: 'Oficial' }, sides: { front: 'frente', back: 'espalda' },
       p: {
         jersey: { name: 'Jersey de béisbol', short: 'Jersey', desc: 'Dos botones, marino con paneles blancos. Nombre, número y tu logo.', help: 'Escribe el nombre de la espalda, cambia el número del frente y la espalda, y súmale tu logo.' },
@@ -325,7 +328,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   function save(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) {} }
   var lang = load('ld-lang', 'en') === 'es' ? 'es' : 'en';
   var L = function () { return T[lang]; };
-  var st = { prod: 'jersey', nombre: 'LUCA', numero: '15', texto: 'Luca', size: {}, angle: 0, logos: {}, cart: load('ld-cart', []) };
+  var st = { prod: 'jersey', font: 'varsity', nombre: 'LUCA', numero: '15', texto: 'Luca', size: {}, angle: 0, logos: {}, cart: load('ld-cart', []) };
   if (!Array.isArray(st.cart)) st.cart = [];
   var $ = function (id) { return document.getElementById(id); };
   var cur = function () { return CAT.filter(function (p) { return p.id === st.prod; })[0]; };
@@ -405,7 +408,14 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     var p = cur(), tx = L().p[p.id], isJ = p.id === 'jersey', isB = p.id === 'ball';
     $('help').textContent = tx.help;
     fill($('tabs'), CAT.map(function (c) { return chip(L().p[c.id].short, c.id === st.prod, function () { pick(c.id); }); }));
-    $('fJersey').hidden = !isJ; $('fTexto').hidden = !isB;
+    $('fJersey').hidden = !isJ; $('fTexto').hidden = !isB; $('fLetter').hidden = !isJ;
+    var fo = FONTS.filter(function (f) { return f[0] === st.font; })[0] || FONTS[0];
+    $('spin').style.setProperty('--letter', fo[1]); $('spin').style.setProperty('--k', fo[2]);
+    fill($('letters'), FONTS.map(function (f) {
+      var c = chip(L().fonts[f[0]], f[0] === fo[0], function () { st.font = f[0]; render(); });
+      c.style.fontFamily = f[1] + ', Barlow, sans-serif'; c.style.fontSize = '15px'; c.style.letterSpacing = '.04em';
+      return c;
+    }));
     $('nombre').value = st.nombre; $('numero').value = st.numero; $('texto').value = st.texto;
     var size = st.size[p.id] || p.sizes[0];
     fill($('sizes'), p.sizes.map(function (s) { return chip(L().sizes[s], s === size, function () { st.size[p.id] = s; render(); }); }));
@@ -415,7 +425,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     $('turn').hidden = !p.back; $('stage').style.cursor = p.back ? 'grab' : 'default';
     $('numFront').hidden = !isJ; $('numFront').textContent = st.numero; $('numBack').textContent = st.numero;
     var nb = $('nameBack'); nb.textContent = st.nombre;
-    var n = Math.max(st.nombre.length, 1); nb.style.fontSize = (n <= 6 ? 9 : Math.max(4.2, 9 * 6 / n)).toFixed(2) + 'cqw';
+    var n = Math.max(st.nombre.length, 1); nb.style.fontSize = ((n <= 6 ? 8 : Math.max(3.8, 8 * 6 / n)) * fo[2]).toFixed(2) + 'cqw';
     var en = $('engrave'); en.hidden = !isB; en.textContent = st.texto;
     var t = Math.max(st.texto.length, 1); en.style.fontSize = (t <= 6 ? 8 : Math.max(3, 8 * 6 / t)).toFixed(2) + 'cqw';
     placeLogo(); applyAngle();
@@ -462,7 +472,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   // ---- Bag (kept in the browser so it survives a reload) ----
   function detail(it) {
     var d = [];
-    if (it.id === 'jersey') d.push((it.nombre || L().noName) + ' #' + (it.numero || '0'));
+    if (it.id === 'jersey') d.push((it.nombre || L().noName) + ' #' + (it.numero || '0') + (it.font && L().fonts[it.font] ? ' · ' + L().fonts[it.font] : ''));
     if (it.id === 'ball' && it.texto) d.push(L().engraved + it.texto);
     if (it.logo) d.push(L().withLogo + (it.side ? ' (' + L().sides[it.side] + ')' : ''));
     d.push(L().sizeWord + L().sizes[it.size]);
@@ -496,9 +506,9 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   $('add').addEventListener('click', function () {
     var p = cur(), lg = logo(), has = !!(lg && lg.src);
     var it = { id: p.id, size: st.size[p.id] || p.sizes[0], logo: has, side: has && p.back ? lg.side : '', qty: 1 };
-    if (p.id === 'jersey') { it.nombre = st.nombre; it.numero = st.numero; }
+    if (p.id === 'jersey') { it.nombre = st.nombre; it.numero = st.numero; it.font = st.font; }
     if (p.id === 'ball') it.texto = st.texto;
-    var key = function (x) { return [x.id, x.size, x.logo, x.side, x.nombre, x.numero, x.texto].join('|'); };
+    var key = function (x) { return [x.id, x.size, x.logo, x.side, x.nombre, x.numero, x.texto, x.font].join('|'); };
     var same = st.cart.filter(function (x) { return key(x) === key(it); })[0];
     if (same) same.qty += 1; else st.cart.push(it);
     $('addMsg').textContent = L().added + L().p[p.id].name + '.';
