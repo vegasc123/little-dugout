@@ -67,6 +67,7 @@ input[type=file]{min-height:44px;font-size:14px}
 .msg{min-height:20px;font-size:13px;line-height:20px;color:var(--gold-text)}
 .cta.follow{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
 .cta.follow img{display:block;width:20px;height:20px}
+.cta:disabled{opacity:.6;cursor:default}
 .cta{min-height:48px;padding:0 24px;border:0;background:var(--navy);color:var(--white);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .stage{background:var(--tile);perspective:1400px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .spin{position:relative;transform-style:preserve-3d;transition:transform .12s linear}
@@ -286,7 +287,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       threePieces: 'Three pieces', designLink: 'Design it', design: 'Design', product: 'Product',
       nameLabel: 'Name · back, up to 12 letters', numberLabel: 'Number · front and back', engraveLabel: 'Engraved text · up to 16 letters',
       logoLabel: 'Your logo or artwork · PNG files', pieces: 'Uploaded files', fileWord: 'File ', maxFiles: 'You can add up to 6 files per piece.', ownHint: 'Upload your name and number as PNG files below, then drag each one into place.', logoNote: 'PNG with a transparent background, at least 1000 px on the long side, up to 10 MB.', dragHint: 'Drag each file on the piece to place it anywhere. Pick a file to resize or remove it.',
-      textTools: 'Placement and size · name and numbers', textHint: 'Drag the name or a number on the jersey to move it. Pick one to change its size.', tNumFront: 'Front number', tName: 'Name', tNumBack: 'Back number', textSize: 'Size of this text', textReset: 'Reset placement', customPlace: 'custom placement',
+      textTools: 'Placement and size · name and numbers', textHint: 'Drag the name or a number on the jersey to move it. Pick one to change its size.', tNumFront: 'Front number', tName: 'Name', tNumBack: 'Back number', textSize: 'Size of this text', saving: 'Saving your design…', notSaved: 'We could not save this design online yet, so it is kept on this device only.', designWord: 'Design ', textReset: 'Reset placement', customPlace: 'custom placement',
       logoSide: 'Side', logoSize: 'Size of this file', logoRemove: 'Remove this file', size: 'Size', addTo: 'Add to bag', added: 'Added: ',
       front: 'Front', back: 'Back', rotate: 'Rotate', previewNote: 'On-screen preview; final artwork is reviewed before production.',
       frontView: ', front view', backView: 'Back of the jersey', yourLogo: 'Your logo',
@@ -316,7 +317,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       threePieces: 'Tres piezas', designLink: 'Diseñar', design: 'Diseñar', product: 'Producto',
       nameLabel: 'Nombre · espalda, hasta 12 letras', numberLabel: 'Número · frente y espalda', engraveLabel: 'Texto grabado · hasta 16 letras',
       logoLabel: 'Tu logo o diseño · archivos PNG', pieces: 'Archivos subidos', fileWord: 'Archivo ', maxFiles: 'Puedes agregar hasta 6 archivos por pieza.', ownHint: 'Sube tu nombre y tu número como archivos PNG aquí abajo y arrastra cada uno a su lugar.', logoNote: 'PNG con fondo transparente, mínimo 1000 px por lado, hasta 10 MB.', dragHint: 'Arrastra cada archivo sobre la pieza para ponerlo donde quieras. Elige un archivo para cambiar su tamaño o quitarlo.',
-      textTools: 'Posición y tamaño · nombre y números', textHint: 'Arrastra el nombre o un número sobre el jersey para moverlo. Elige uno para cambiar su tamaño.', tNumFront: 'Número del frente', tName: 'Nombre', tNumBack: 'Número de la espalda', textSize: 'Tamaño de este texto', textReset: 'Restablecer posición', customPlace: 'posición personalizada',
+      textTools: 'Posición y tamaño · nombre y números', textHint: 'Arrastra el nombre o un número sobre el jersey para moverlo. Elige uno para cambiar su tamaño.', tNumFront: 'Número del frente', tName: 'Nombre', tNumBack: 'Número de la espalda', textSize: 'Tamaño de este texto', saving: 'Guardando tu diseño…', notSaved: 'Todavía no pudimos guardar este diseño en línea; queda solo en este dispositivo.', designWord: 'Diseño ', textReset: 'Restablecer posición', customPlace: 'posición personalizada',
       logoSide: 'Lado', logoSize: 'Tamaño de este archivo', logoRemove: 'Quitar este archivo', size: 'Talla', addTo: 'Agregar a la bolsa', added: 'Agregado: ',
       front: 'Frente', back: 'Espalda', rotate: 'Girar', previewNote: 'Vista previa de pantalla; el arte final se revisa antes de producir.',
       frontView: ', vista de frente', backView: 'Espalda del jersey', yourLogo: 'Tu logo',
@@ -563,6 +564,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     var d = [];
     if (it.id === 'jersey') d.push(it.font === 'own' ? L().fonts.own : (it.nombre || L().noName) + ' #' + (it.numero || '0') + (it.font && L().fonts[it.font] ? ' · ' + L().fonts[it.font] : ''));
     if (it.place) d.push(L().customPlace);
+    if (it.design) d.push(L().designWord + it.design);
     if (it.id === 'ball' && it.texto) d.push(L().engraved + it.texto);
     var nf = it.files || (it.logo ? 1 : 0);
     if (nf) d.push(L().withFiles(nf));
@@ -594,16 +596,48 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   function openBag(open) { $('bag').hidden = !open; $('bagBtn').setAttribute('aria-expanded', open ? 'true' : 'false'); }
   $('bagBtn').addEventListener('click', function () { openBag($('bag').hidden); });
   $('bagClear').addEventListener('click', function () { st.cart = []; commit(); });
+  // ---- Saving a design (uploaded files go to storage, the design goes to the database) ----
+  var blobLib = null;
+  function loadBlob() {
+    if (!blobLib) blobLib = new Promise(function (ok, fail) {
+      var sc = document.createElement('script'); sc.src = 'vendor/blob-client.js';
+      sc.onload = function () { ok(window.LDBlob); }; sc.onerror = function () { blobLib = null; fail(new Error('upload library')); };
+      document.head.appendChild(sc);
+    });
+    return blobLib;
+  }
+  function rid() { var a = new Uint8Array(8); crypto.getRandomValues(a); return Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); }
+  // Each file is uploaded once; its address is kept on the file so adding the same design again does not upload it twice.
+  function uploadFile(lg) {
+    if (lg.url) return Promise.resolve(lg.url);
+    return Promise.all([loadBlob(), fetch(lg.src).then(function (r) { return r.blob(); })]).then(function (v) {
+      return v[0].upload('uploads/' + rid() + '.png', v[1], { access: 'public', handleUploadUrl: '/api/upload', contentType: 'image/png' });
+    }).then(function (b) { lg.url = b.url; return b.url; });
+  }
+  function saveDesign(it, list) {
+    return Promise.all(list.map(uploadFile)).then(function (urls) {
+      var d = { id: it.id, size: it.size, font: it.font, nombre: it.nombre, numero: it.numero, texto: it.texto, place: it.place,
+        files: list.map(function (lg, i) { return { url: urls[i], side: lg.side || 'front', x: lg.x, y: lg.y, w: lg.w }; }) };
+      return fetch('/api/designs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) });
+    }).then(function (r) { if (!r.ok) throw new Error('save ' + r.status); return r.json(); }).then(function (j) { if (!j.id) throw new Error('save'); return j.id; });
+  }
+  var saving = false;
   $('add').addEventListener('click', function () {
-    var p = cur();
-    var it = { id: p.id, size: st.size[p.id] || p.sizes[0], files: arts().length, qty: 1 };
+    if (saving) return;
+    var p = cur(), list = arts().slice();
+    var it = { id: p.id, size: st.size[p.id] || p.sizes[0], files: list.length, qty: 1 };
     if (p.id === 'jersey') { it.font = st.font; if (st.font !== 'own') { it.nombre = st.nombre; it.numero = st.numero; var mv = moved(); if (mv) it.place = mv; } }
     if (p.id === 'ball') it.texto = st.texto;
-    var key = function (x) { return [x.id, x.size, x.files, x.nombre, x.numero, x.texto, x.font, JSON.stringify(x.place || '')].join('|'); };
-    var same = st.cart.filter(function (x) { return key(x) === key(it); })[0];
-    if (same) same.qty += 1; else st.cart.push(it);
-    $('addMsg').textContent = L().added + L().p[p.id].name + '.';
-    commit(); openBag(true);
+    var put = function (note) {
+      var key = function (x) { return [x.id, x.size, x.files, x.nombre, x.numero, x.texto, x.font, JSON.stringify(x.place || ''), x.design || ''].join('|'); };
+      var same = it.design ? null : st.cart.filter(function (x) { return !x.design && key(x) === key(it); })[0];
+      if (same) same.qty += 1; else st.cart.push(it);
+      $('addMsg').textContent = L().added + L().p[p.id].name + '.' + (note ? ' ' + note : '');
+      commit(); openBag(true);
+    };
+    saving = true; $('add').disabled = true; $('addMsg').textContent = L().saving;
+    saveDesign(it, list).then(function (id) { it.design = id; put(''); }, function () { put(L().notSaved); })
+      .then(function () { saving = false; $('add').disabled = false; });
   });
 
   $('news').addEventListener('submit', function (e) { e.preventDefault(); $('newsMsg').textContent = L().subscribed; });
