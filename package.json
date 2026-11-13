@@ -1,0 +1,16 @@
+{
+  "name": "little-dugout",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22.x" },
+  "scripts": {
+    "build:vendor": "esbuild src/blob-client.js --bundle --minify --format=iife --global-name=LDBlob --outfile=vendor/blob-client.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "@vercel/blob": "^2.9.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

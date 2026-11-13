@@ -18,13 +18,19 @@ Baseball gear for kids that the customer designs: a jersey, a trucker cap and an
 
 ## How it is built
 
-A single `index.html` with plain HTML, CSS and JavaScript, with no framework and no build step.
+- `index.html`: the whole storefront in plain HTML, CSS and JavaScript, with no framework.
+- `api/upload.js`: a Vercel Function that gives the browser a short-lived token, so a customer's PNG goes straight to Vercel Blob storage.
+- `api/designs.js`: a Vercel Function that checks a design and saves it in a Postgres database (Neon), and reads it back by id.
+- `lib/design.js`: the rules a design must pass before it is saved.
+- `vendor/blob-client.js`: the browser upload helper, bundled from `src/blob-client.js` with `npm run build:vendor`.
+
 The repository is connected to Vercel, so every change merged into `main` is published automatically.
+Storage keys live only in the Vercel project settings (`BLOB_READ_WRITE_TOKEN`, `DATABASE_URL`); they are never in this repository.
 
 ## Not built yet
 
-This is a storefront preview. It does not take payments, save orders or store uploaded logos.
-Prices are placeholders.
+It does not take payments or create orders yet. Prices are placeholders.
+Uploads are open to any visitor (PNG only, up to 10 MB each), with no rate limit yet.
 
 ## Roadmap
 
@@ -32,8 +38,8 @@ Prices are placeholders.
 | --- | --- | --- |
 | 0 | Repository on GitHub with automatic deploys on Vercel | Done |
 | 1 | Prices, persistent bag, English/Spanish, contact form | Done |
-| 2 | Save designs and uploaded logos | Next |
-| 3 | Payments | Planned |
+| 2 | Save designs and uploaded logos | Done |
+| 3 | Payments | Next |
 | 4 | Private order dashboard | Planned |
 | 5 | Order and shipping emails | Planned |
 | 6 | Marketing: newsletter, discount codes, analytics | Planned |
