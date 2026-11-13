@@ -73,10 +73,12 @@ input[type=file]{min-height:44px;font-size:14px}
 .face>img.base{display:block;width:100%;height:auto;pointer-events:none}
 .ov{position:absolute;text-align:center;pointer-events:none;line-height:1}
 .num{font-family:var(--letter,Graduate),Georgia,serif;font-weight:400;color:var(--gold);paint-order:stroke fill}
-.num.front{left:48%;top:30%;width:26%;font-size:calc(9cqw * var(--k,1));-webkit-text-stroke:.4cqw #fff}
-.name.backn{left:0;right:0;top:23%;font:400 9cqw/1 var(--letter,Graduate),Georgia,serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);-webkit-text-stroke:.4cqw #fff;paint-order:stroke fill;white-space:nowrap}
-.num.backn{left:0;right:0;top:33%;font-size:calc(28cqw * var(--k,1));letter-spacing:.02em;-webkit-text-stroke:1cqw #fff}
+.num.front{font-size:calc(9cqw * var(--k,1) * var(--s,1));-webkit-text-stroke:.4cqw #fff}
+.name.backn{font:400 9cqw/1 var(--letter,Graduate),Georgia,serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);-webkit-text-stroke:.4cqw #fff;paint-order:stroke fill;white-space:nowrap}
+.num.backn{font-size:calc(28cqw * var(--k,1) * var(--s,1));letter-spacing:.02em;-webkit-text-stroke:1cqw #fff}
 .engrave{left:32%;right:32%;top:45%;font-family:Yellowtail,'Brush Script MT',cursive;font-size:11cqw;line-height:1.1;color:var(--navy);white-space:nowrap}
+.ov.mv{transform:translate(-50%,-50%);white-space:nowrap;pointer-events:auto;cursor:move;touch-action:none;-webkit-user-select:none;user-select:none;outline-offset:.8cqw}
+.ov.mv.on{outline:1px dashed var(--ctl)}
 .userlogo{position:absolute;height:auto;transform:translate(-50%,-50%);cursor:move;touch-action:none;outline:1px dashed var(--ctl);outline-offset:4px}
 .turn{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
 .turn input{flex:1 1 160px;min-width:0}
@@ -162,6 +164,14 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
         <div class="field" style="flex:2 1 180px"><label class="label" for="nombre" data-i18n="nameLabel"></label><input id="nombre" type="text" maxlength="12" autocomplete="off" style="text-transform:uppercase"></div>
         <div class="field" style="flex:1 1 110px"><label class="label" for="numero" data-i18n="numberLabel"></label><input id="numero" type="text" inputmode="numeric" maxlength="2" autocomplete="off"></div>
       </div>
+      <div class="field" id="fText" style="gap:8px">
+        <div class="label" data-i18n="textTools"></div>
+        <p class="note" style="color:var(--ink)" data-i18n="textHint"></p>
+        <div class="chips" id="texts" role="group" data-i18n-aria="textTools"></div>
+        <label class="label" for="textS" data-i18n="textSize"></label>
+        <input id="textS" type="range" min="50" max="180" step="5" value="100">
+        <div><button class="linkbtn caps u" id="textReset" type="button" data-i18n="textReset"></button></div>
+      </div>
       <div class="field" id="fTexto"><label class="label" for="texto" data-i18n="engraveLabel"></label><input id="texto" type="text" maxlength="16" autocomplete="off"></div>
       <div class="field" style="gap:8px">
         <label class="label" for="logo" data-i18n="logoLabel"></label>
@@ -186,13 +196,13 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
         <div class="spin" id="spin">
           <div class="face" id="front">
             <img class="base" id="frontImg" alt="" draggable="false">
-            <div class="ov num front" id="numFront"></div>
+            <div class="ov mv num front" id="numFront"></div>
             <div class="ov engrave" id="engrave"></div>
           </div>
           <div class="face back" id="back">
             <img class="base" id="backImg" alt="" draggable="false">
-            <div class="ov name backn" id="nameBack"></div>
-            <div class="ov num backn" id="numBack"></div>
+            <div class="ov mv name backn" id="nameBack"></div>
+            <div class="ov mv num backn" id="numBack"></div>
           </div>
         </div>
       </div>
@@ -274,6 +284,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       threePieces: 'Three pieces', designLink: 'Design it', design: 'Design', product: 'Product',
       nameLabel: 'Name · back, up to 12 letters', numberLabel: 'Number · front and back', engraveLabel: 'Engraved text · up to 16 letters',
       logoLabel: 'Your logo or artwork · PNG files', pieces: 'Uploaded files', fileWord: 'File ', maxFiles: 'You can add up to 6 files per piece.', ownHint: 'Upload your name and number as PNG files below, then drag each one into place.', logoNote: 'PNG with a transparent background, at least 1000 px on the long side, up to 10 MB.', dragHint: 'Drag each file on the piece to place it anywhere. Pick a file to resize or remove it.',
+      textTools: 'Placement and size · name and numbers', textHint: 'Drag the name or a number on the jersey to move it. Pick one to change its size.', tNumFront: 'Front number', tName: 'Name', tNumBack: 'Back number', textSize: 'Size of this text', textReset: 'Reset placement', customPlace: 'custom placement',
       logoSide: 'Side', logoSize: 'Size of this file', logoRemove: 'Remove this file', size: 'Size', addTo: 'Add to bag', added: 'Added: ',
       front: 'Front', back: 'Back', rotate: 'Rotate', previewNote: 'On-screen preview; final artwork is reviewed before production.',
       frontView: ', front view', backView: 'Back of the jersey', yourLogo: 'Your logo',
@@ -303,6 +314,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       threePieces: 'Tres piezas', designLink: 'Diseñar', design: 'Diseñar', product: 'Producto',
       nameLabel: 'Nombre · espalda, hasta 12 letras', numberLabel: 'Número · frente y espalda', engraveLabel: 'Texto grabado · hasta 16 letras',
       logoLabel: 'Tu logo o diseño · archivos PNG', pieces: 'Archivos subidos', fileWord: 'Archivo ', maxFiles: 'Puedes agregar hasta 6 archivos por pieza.', ownHint: 'Sube tu nombre y tu número como archivos PNG aquí abajo y arrastra cada uno a su lugar.', logoNote: 'PNG con fondo transparente, mínimo 1000 px por lado, hasta 10 MB.', dragHint: 'Arrastra cada archivo sobre la pieza para ponerlo donde quieras. Elige un archivo para cambiar su tamaño o quitarlo.',
+      textTools: 'Posición y tamaño · nombre y números', textHint: 'Arrastra el nombre o un número sobre el jersey para moverlo. Elige uno para cambiar su tamaño.', tNumFront: 'Número del frente', tName: 'Nombre', tNumBack: 'Número de la espalda', textSize: 'Tamaño de este texto', textReset: 'Restablecer posición', customPlace: 'posición personalizada',
       logoSide: 'Lado', logoSize: 'Tamaño de este archivo', logoRemove: 'Quitar este archivo', size: 'Talla', addTo: 'Agregar a la bolsa', added: 'Agregado: ',
       front: 'Frente', back: 'Espalda', rotate: 'Girar', previewNote: 'Vista previa de pantalla; el arte final se revisa antes de producir.',
       frontView: ', vista de frente', backView: 'Espalda del jersey', yourLogo: 'Tu logo',
@@ -373,6 +385,45 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   function pick(id) { st.prod = id; st.angle = 0; $('logoMsg').textContent = ''; $('addMsg').textContent = ''; $('logo').value = ''; render(); }
 
   var artEls = []; // uploaded-file elements, in the same order as arts()
+  // Built-in name and numbers: where each one sits (x, y in % of the jersey) and its size (s, 1 = standard).
+  var TEXTS = [['numFront', 'tNumFront', 0], ['nameBack', 'tName', 180], ['numBack', 'tNumBack', 180]];
+  var DEF = { numFront: { x: 61, y: 35, s: 1 }, nameBack: { x: 50, y: 27, s: 1 }, numBack: { x: 50, y: 47, s: 1 } };
+  function defPos() { var o = {}; for (var k in DEF) o[k] = { x: DEF[k].x, y: DEF[k].y, s: DEF[k].s }; return o; }
+  st.pos = defPos(); st.tsel = 'numFront';
+  function moved() { var o = {}, any = false; for (var k in DEF) { var a = st.pos[k], d = DEF[k]; if (a.x !== d.x || a.y !== d.y || a.s !== d.s) { o[k] = [a.x, a.y, Math.round(a.s * 100)]; any = true; } } return any ? o : null; }
+  function placeText() {
+    TEXTS.forEach(function (t) {
+      var e = $(t[0]), a = st.pos[t[0]];
+      e.style.left = a.x + '%'; e.style.top = a.y + '%'; e.style.setProperty('--s', a.s);
+      e.classList.toggle('on', st.tsel === t[0]);
+    });
+    fill($('texts'), TEXTS.map(function (t) {
+      return chip(L()[t[1]], st.tsel === t[0], function () { st.tsel = t[0]; st.angle = t[2]; applyAngle(); placeText(); });
+    }));
+    $('textS').value = Math.round(st.pos[st.tsel].s * 100);
+  }
+  TEXTS.forEach(function (t) {
+    var e = $(t[0]), drag = null;
+    e.addEventListener('pointerdown', function (ev) {
+      ev.stopPropagation(); ev.preventDefault();
+      var a = st.pos[t[0]], r = e.parentNode.getBoundingClientRect();
+      drag = { r: r, dx: a.x - (ev.clientX - r.left) / r.width * 100, dy: a.y - (ev.clientY - r.top) / r.height * 100 };
+      if (st.tsel !== t[0]) { st.tsel = t[0]; placeText(); }
+      try { e.setPointerCapture(ev.pointerId); } catch (err) {}
+    });
+    e.addEventListener('pointermove', function (ev) {
+      if (!drag) return;
+      ev.stopPropagation();
+      var a = st.pos[t[0]];
+      a.x = Math.round(Math.max(8, Math.min(92, (ev.clientX - drag.r.left) / drag.r.width * 100 + drag.dx)));
+      a.y = Math.round(Math.max(8, Math.min(92, (ev.clientY - drag.r.top) / drag.r.height * 100 + drag.dy)));
+      e.style.left = a.x + '%'; e.style.top = a.y + '%';
+    });
+    var end = function (ev) { ev.stopPropagation(); drag = null; };
+    e.addEventListener('pointerup', end); e.addEventListener('pointercancel', end);
+  });
+  $('textS').addEventListener('input', function (e) { st.pos[st.tsel].s = (Number(e.target.value) || 100) / 100; render(); });
+  $('textReset').addEventListener('click', function () { st.pos = defPos(); render(); });
   function placeLogo() {
     artEls = [];
     var old = document.querySelectorAll('.userlogo');
@@ -428,7 +479,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     $('help').textContent = tx.help;
     fill($('tabs'), CAT.map(function (c) { return chip(L().p[c.id].short, c.id === st.prod, function () { pick(c.id); }); }));
     var own = isJ && st.font === 'own';
-    $('fJersey').hidden = !isJ || own; $('ownHint').hidden = !own; $('fTexto').hidden = !isB; $('fLetter').hidden = !isJ;
+    $('fJersey').hidden = !isJ || own; $('ownHint').hidden = !own; $('fText').hidden = !isJ || own; $('fTexto').hidden = !isB; $('fLetter').hidden = !isJ;
     var fo = FONTS.filter(function (f) { return f[0] === st.font; })[0] || FONTS[0];
     $('spin').style.setProperty('--letter', fo[1]); $('spin').style.setProperty('--k', fo[2]);
     fill($('letters'), FONTS.map(function (f) {
@@ -445,10 +496,10 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
     $('turn').hidden = !p.back; $('stage').style.cursor = p.back ? 'grab' : 'default';
     $('numFront').hidden = !isJ || own; $('numFront').textContent = st.numero; $('numBack').textContent = st.numero; $('numBack').hidden = own;
     var nb = $('nameBack'); nb.textContent = st.nombre; nb.hidden = own;
-    var n = Math.max(st.nombre.length, 1); nb.style.fontSize = ((n <= 6 ? 8 : Math.max(3.8, 8 * 6 / n)) * fo[2]).toFixed(2) + 'cqw';
+    var n = Math.max(st.nombre.length, 1); nb.style.fontSize = ((n <= 6 ? 8 : Math.max(3.8, 8 * 6 / n)) * fo[2] * st.pos.nameBack.s).toFixed(2) + 'cqw';
     var en = $('engrave'); en.hidden = !isB; en.textContent = st.texto;
     var t = Math.max(st.texto.length, 1); en.style.fontSize = (t <= 6 ? 8 : Math.max(3, 8 * 6 / t)).toFixed(2) + 'cqw';
-    placeLogo(); applyAngle();
+    placeText(); placeLogo(); applyAngle();
   }
   $('nombre').addEventListener('input', function (e) { st.nombre = e.target.value.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÜ .'-]/g, '').slice(0, 12); render(); });
   $('numero').addEventListener('input', function (e) { st.numero = e.target.value.replace(/[^0-9]/g, '').slice(0, 2); render(); });
@@ -509,6 +560,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   function detail(it) {
     var d = [];
     if (it.id === 'jersey') d.push(it.font === 'own' ? L().fonts.own : (it.nombre || L().noName) + ' #' + (it.numero || '0') + (it.font && L().fonts[it.font] ? ' · ' + L().fonts[it.font] : ''));
+    if (it.place) d.push(L().customPlace);
     if (it.id === 'ball' && it.texto) d.push(L().engraved + it.texto);
     var nf = it.files || (it.logo ? 1 : 0);
     if (nf) d.push(L().withFiles(nf));
@@ -543,9 +595,9 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   $('add').addEventListener('click', function () {
     var p = cur();
     var it = { id: p.id, size: st.size[p.id] || p.sizes[0], files: arts().length, qty: 1 };
-    if (p.id === 'jersey') { it.font = st.font; if (st.font !== 'own') { it.nombre = st.nombre; it.numero = st.numero; } }
+    if (p.id === 'jersey') { it.font = st.font; if (st.font !== 'own') { it.nombre = st.nombre; it.numero = st.numero; var mv = moved(); if (mv) it.place = mv; } }
     if (p.id === 'ball') it.texto = st.texto;
-    var key = function (x) { return [x.id, x.size, x.files, x.nombre, x.numero, x.texto, x.font].join('|'); };
+    var key = function (x) { return [x.id, x.size, x.files, x.nombre, x.numero, x.texto, x.font, JSON.stringify(x.place || '')].join('|'); };
     var same = st.cart.filter(function (x) { return key(x) === key(it); })[0];
     if (same) same.qty += 1; else st.cart.push(it);
     $('addMsg').textContent = L().added + L().p[p.id].name + '.';

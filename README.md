@@ -7,7 +7,7 @@ Baseball gear for kids that the customer designs: a jersey, a trucker cap and an
 ## What it does today
 
 - Three products, each with its own designer.
-  - **Jersey:** name on the back, number on the front and back, and the customer's own logo placed anywhere.
+  - **Jersey:** name on the back, number on the front and back in four lettering styles (or the customer's own name and number artwork), each one draggable and resizable, plus the customer's own logo placed anywhere.
   - **Cap:** the customer's logo on the front panel.
   - **Ball:** engraved text or the customer's own artwork.
 - Logo upload with checks: PNG only, up to 10 MB, and a warning when the image is under 1000 px.
