@@ -65,6 +65,8 @@ input[type=range]{width:100%;height:44px;accent-color:var(--navy)}
 input[type=file]{min-height:44px;font-size:14px}
 .note{font-size:13px;line-height:20px;color:var(--muted);margin:0}
 .msg{min-height:20px;font-size:13px;line-height:20px;color:var(--gold-text)}
+.cta.follow{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.cta.follow img{display:block;width:20px;height:20px}
 .cta{min-height:48px;padding:0 24px;border:0;background:var(--navy);color:var(--white);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .stage{background:var(--tile);perspective:1400px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .spin{position:relative;transform-style:preserve-3d;transition:transform .12s linear}
@@ -221,7 +223,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
   <div class="wrap block">
     <div class="ighead">
       <div><h2 data-i18n="igTitle"></h2><p class="note" style="margin-top:4px" data-i18n="igText"></p></div>
-      <a class="caps" href="https://www.instagram.com/lucabaseball15/" target="_blank" rel="noopener" data-i18n="igFollow"></a>
+      <a class="cta follow" href="https://www.instagram.com/lucabaseball15/" target="_blank" rel="noopener"><img src="img/instagram.svg" alt="" width="20" height="20" onerror="this.remove()"><span data-i18n="igFollow"></span></a>
     </div>
     <div class="reels" id="reels"></div>
   </div>
@@ -291,7 +293,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       notPng: 'That file is not a PNG. Upload your logo as a PNG with a transparent background.', tooBig: 'That file is over 10 MB. Upload a lighter version.', unreadable: 'We could not read that file. Try another PNG.',
       logoSmall: function (w, h) { return 'Your logo is ' + w + ' × ' + h + ' px. It shows on screen, but we need at least 1000 px to produce it well.'; },
       logoOk: function (w, h) { return 'Logo ready: ' + w + ' × ' + h + ' px.'; },
-      igTitle: 'Luca on Instagram', igText: 'The little slugger behind the shop. His videos have millions of views.', igFollow: 'Follow @lucabaseball15', igView: 'View on Instagram',
+      igTitle: 'Luca on Instagram', igText: 'The little slugger behind the shop. His videos have millions of views.', igFollow: 'Follow @lucabaseball15 on Instagram', igView: 'View on Instagram',
       contactTitle: 'Need something more specific?', contactText: 'Team orders, a different color, a special design: tell us what you have in mind and we will get back to you.',
       cName: 'Your name', cEmail: 'Your email', cAbout: 'What is it about?', cMsg: 'Tell us what you need', cSend: 'Send request',
       aboutOpts: ['A custom design', 'A team or bulk order', 'A question about a product', 'Something else'],
@@ -321,7 +323,7 @@ select{height:44px;padding:0 12px;border:1px solid var(--ctl);border-radius:0;ba
       notPng: 'Ese archivo no es PNG. Sube tu logo en PNG con fondo transparente.', tooBig: 'El archivo pesa más de 10 MB. Sube una versión más liviana.', unreadable: 'No pudimos leer ese archivo. Prueba con otro PNG.',
       logoSmall: function (w, h) { return 'Tu logo mide ' + w + ' × ' + h + ' px. Se ve en pantalla, pero para producir bien necesitamos al menos 1000 px.'; },
       logoOk: function (w, h) { return 'Logo listo: ' + w + ' × ' + h + ' px.'; },
-      igTitle: 'Luca en Instagram', igText: 'El pequeño bateador detrás de la tienda. Sus videos suman millones de vistas.', igFollow: 'Seguir a @lucabaseball15', igView: 'Ver en Instagram',
+      igTitle: 'Luca en Instagram', igText: 'El pequeño bateador detrás de la tienda. Sus videos suman millones de vistas.', igFollow: 'Seguir a @lucabaseball15 en Instagram', igView: 'Ver en Instagram',
       contactTitle: '¿Necesitas algo más específico?', contactText: 'Pedidos para un equipo, otro color, un diseño especial: cuéntanos qué tienes en mente y te respondemos.',
       cName: 'Tu nombre', cEmail: 'Tu correo', cAbout: '¿De qué se trata?', cMsg: 'Cuéntanos qué necesitas', cSend: 'Enviar solicitud',
       aboutOpts: ['Un diseño a medida', 'Un pedido para equipo o por cantidad', 'Una pregunta sobre un producto', 'Otra cosa'],
